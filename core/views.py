@@ -1,0 +1,45 @@
+from django.shortcuts import render
+from django.views import View
+
+from .models import Todo
+
+
+from django.http import HttpResponse
+
+from django.shortcuts import get_object_or_404
+
+
+def index_view(request):
+    todos = Todo.objects.all()
+
+    return render(request, "index.html", context={"todos": todos})
+
+
+class TodoUpdateView(View):
+    def get(self, request, todo_id):
+        todo = get_object_or_404(Todo.objects.all(), id=todo_id)
+        return render(request, "update-todo.html", {"todo": todo})
+
+    def post(self, request, todo_id):
+        todo = get_object_or_404(Todo.objects.all(), id=todo_id)
+        todo.name = request.POST["name"]
+        todo.done = request.POST.get("done", False) is not False
+        todo.save()
+        return render(request, "oob-todo.html", {"todo": Todo.objects.get(id=todo_id)})
+
+
+class TodoView(View):
+    def post(self, request):
+        name = request.POST["name"]
+        done = request.POST.get("done", False)
+        todo = Todo.objects.create(name=name, done=done)
+        return render(request, "oob-todo.html", {"todo": todo})
+
+    def get(self, request, todo_id):
+        todo = get_object_or_404(Todo.objects.all(), id=todo_id)
+        return render(request, "oob-todo.html", {"todo": todo})
+
+    def delete(self, request, todo_id):
+        todo = get_object_or_404(Todo.objects.all(), id=todo_id)
+        todo.delete()
+        return HttpResponse(status=200)

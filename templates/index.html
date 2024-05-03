@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minimal ToDO</title>
+  <script src="https://unpkg.com/htmx.org@1.9.12/dist/htmx.js" integrity="sha384-qbtR4rS9RrUMECUWDWM2+YGgN3U4V4ZncZ0BvUcg9FGct0jqXz3PUdVpU1p0yrXS" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div>
+    <h1>Minimal ToDO</h1>
+    <form hx-post="{% url 'todos' %}" hx-swap="none"  hx-on::before-request="this.reset()">
+      {% csrf_token %}
+      <input type="text" name="name" placeholder="Enter a new todo">
+      <button type="submit">Add</button>
+    </form>
+    <div id="todos">
+      {% for todo in todos %}
+        {% include 'todo.html' with todo=todo %}
+      {% endfor %}
+    </div>
+  </div> 
+</body>
+</html>
