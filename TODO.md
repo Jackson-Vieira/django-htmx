@@ -1,7 +1,7 @@
 # TODO
 
 Features
-- [ ] Design the TODO layout (Refactoring UI, Theme Colors, Font, etc) (Credits, Github link)
+- [ ] Design the TODO layout (Refactoring UI, Theme Colors, Font, etc) (Credits, Github link, Icons)
 - [X] Add a task item
 - [X] Remove a task item
 - [X] Mark a task item as done
