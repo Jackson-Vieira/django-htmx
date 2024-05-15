@@ -1,0 +1,9 @@
+<ul hx-swap-oob="beforeend" 
+    {% if todo.done %}
+        id="todos__done"
+    {% else %}
+        id="todos"
+    {% endif %}
+    >
+    {% include 'todo.html' with todo=todo %}
+</ul>

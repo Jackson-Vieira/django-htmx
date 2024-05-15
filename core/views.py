@@ -9,7 +9,10 @@ from .models import Todo
 def index_view(request):
     todos = Todo.objects.all()
 
-    return render(request, "index.html", context={"todos": todos})
+    doned = [todo for todo in todos if todo.done]
+    undone = [todo for todo in todos if not todo.done]
+
+    return render(request, "index.html", context={"todos": todos, "doned": doned, "undone": undone})
 
 
 class TodoUpdateView(View):
@@ -25,7 +28,7 @@ class TodoUpdateView(View):
         if action == "state":
             todo.done = not todo.done
             todo.save()
-            return render(request, "oob-todo_detail_hx.html", {"todo": todo, "swap_oob": False})
+            return render(request, "oob-todo-toggle_hx.html", {"todo": todo})
 
         todo.name = request.POST["name"]
         todo.done = request.POST.get("done", False) is not False

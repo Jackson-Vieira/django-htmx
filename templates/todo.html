@@ -7,6 +7,7 @@
                checked
         {% endif %} />
     </form>
-    <span class="flex-1">{{ todo.name }}</span>
+    <span class="flex-1 {% if todo.done %} line-through {% endif %}"
+    >{{ todo.name }}</span>
     <button type="button" hx-delete="{% url 'todo_detail' todo_id=todo.id %}" hx-swap="outerHTML" hx-target="closest .todo" hx-trigger="click">Deletar</button>
 </li>

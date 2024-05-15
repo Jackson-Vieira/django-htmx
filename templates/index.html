@@ -8,11 +8,11 @@
             integrity="sha384-qbtR4rS9RrUMECUWDWM2+YGgN3U4V4ZncZ0BvUcg9FGct0jqXz3PUdVpU1p0yrXS"
             crossorigin="anonymous"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <script>
         htmx.on("htmx:configRequest", function (event) {
             event.detail.headers["X-CSRFToken"] = "{{ csrf_token }}";
-        }); 
+        });
     </script>
 </head>
 <body class="bg-zinc-100">
@@ -20,7 +20,7 @@
     <header class="flex justify-center items-center h-[150px]">
         <h1 class="text-3xl font-bold">Minimal ToDO</h1>
     </header>
-    <div class="flex flex-col space-y-8 p-4 mx-auto max-w-3xl">
+    <div class="flex flex-col space-y-4 p-4 mx-auto max-w-3xl">
         <form class="flex space-x-4" hx-post="{% url 'todos' %}" hx-swap="none" hx-on::before-request="this.reset()">
             {#            {% csrf_token %}#}
             <input class="flex-1 p-2 rounded" type="text" name="name" placeholder="Enter a new todo">
@@ -35,11 +35,17 @@
         </form>
         <div>
             <ul id="todos" class="flex flex-col space-y-4">
-                {% for todo in todos %}
+                {% for todo in undone %}
                     {% include 'todo.html' with todo=todo %}
                 {% endfor %}
             </ul>
         </div>
+        <ul class="flex flex-col space-y-4" id="todos__done">
+            <h2 class="text-xl font-bold">Feitas</h2>
+            {% for todo in doned %}
+                {% include 'todo.html' with todo=todo %}
+            {% endfor %}
+        </ul>
     </div>
 </div>
 </body>
