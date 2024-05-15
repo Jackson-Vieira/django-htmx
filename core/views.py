@@ -1,12 +1,9 @@
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.views import View
 
 from .models import Todo
-
-
-from django.http import HttpResponse
-
-from django.shortcuts import get_object_or_404
 
 
 def index_view(request):
@@ -22,10 +19,18 @@ class TodoUpdateView(View):
 
     def post(self, request, todo_id):
         todo = get_object_or_404(Todo.objects.all(), id=todo_id)
+
+        action = request.GET.get("action")
+
+        if action == "state":
+            todo.done = not todo.done
+            todo.save()
+            return render(request, "oob-todo_detail_hx.html", {"todo": todo, "swap_oob": False})
+
         todo.name = request.POST["name"]
         todo.done = request.POST.get("done", False) is not False
         todo.save()
-        return render(request, "oob-todo.html", {"todo": Todo.objects.get(id=todo_id)})
+        return render(request, "oob-todo_detail_hx.html", {"todo": Todo.objects.get(id=todo_id)})
 
 
 class TodoView(View):
@@ -33,11 +38,11 @@ class TodoView(View):
         name = request.POST["name"]
         done = request.POST.get("done", False)
         todo = Todo.objects.create(name=name, done=done)
-        return render(request, "oob-todo.html", {"todo": todo})
+        return render(request, "oob-todo_detail_add_hx.html", {"todo": todo})
 
     def get(self, request, todo_id):
         todo = get_object_or_404(Todo.objects.all(), id=todo_id)
-        return render(request, "oob-todo.html", {"todo": todo})
+        return render(request, "oob-todo_detail_hx.html", {"todo": todo})
 
     def delete(self, request, todo_id):
         todo = get_object_or_404(Todo.objects.all(), id=todo_id)

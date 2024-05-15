@@ -1,10 +1,9 @@
-<form hx-post="{% url 'update-todo' todo_id=todo.id %}" hx-target="this" hx-swap="outerHTML" 
+<form hx-post="{% url 'todo_update' todo_id=todo.id %}" hx-target="this" hx-swap="outerHTML" 
   hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
 >
-
   <input type="checkbox" name="done" {% if todo.done %}checked{% endif %}>
   <input type="text" name="name" value="{{ todo.name }}">
 
   <button type="submit">Salvar</button>
-  <button hx-get="{% url 'todos' todo_id=todo.id %}">Cancel</button>
+  <button hx-get="{% url 'todo_detail' todo_id=todo.id %}">Cancel</button>
 </form>

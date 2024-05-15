@@ -1,10 +1,12 @@
-<li hx-target="this" hx-swap="outerHTML" class="todo">
-    <input type="checkbox" {% if todo.done  %}
-        checked
-    {% endif %}>
-    <span>{{ todo.name }}</span>
-    <button hx-delete="{% url 'todos' todo_id=todo.id %}" hx-swap="outerHTML" hx-target="closest .todo"  hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>Deletar</button>
-    <button hx-get="{% url 'update-todo' todo_id=todo.id %}">
-        Click To Edit
-    </button>
+<li
+        id="todo-{{ todo.id }}" hx-target="this" hx-swap="outerHTML" class="flex items-center space-x-4 p-5 bg-white todo"
+>
+    <form hx-post="{% url 'todo_update' todo.id %}?action=state" hx-trigger="change">
+       {% csrf_token %}
+        <input name="done" type="checkbox" {% if todo.done %}
+               checked
+        {% endif %} />
+    </form>
+    <span class="flex-1">{{ todo.name }}</span>
+    <button type="button" hx-delete="{% url 'todo_detail' todo_id=todo.id %}" hx-swap="outerHTML" hx-target="closest .todo" hx-trigger="click">Deletar</button>
 </li>

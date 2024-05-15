@@ -24,6 +24,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", index_view, name="index"),
     path("todos/", TodoView.as_view(), name="todos"),
-    path("todos/<int:todo_id>/", TodoView.as_view(), name="todos"),
-    path("todos/<int:todo_id>/update/", TodoUpdateView.as_view(), name="update-todo"),
+    path("todos/<int:todo_id>/", TodoView.as_view(), name="todo_detail"),
+    path("todos/<int:todo_id>/update/", TodoUpdateView.as_view(), name="todo_update"),
 ]
